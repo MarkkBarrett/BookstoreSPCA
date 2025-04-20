@@ -49,4 +49,10 @@ public class BookController {
     public List<Book> searchByCategory(@RequestParam String category) {
         return bookService.searchByCategory(category);
     }
+    
+    // Sort using STRATEGY pattern
+    @GetMapping("/sort")
+    public List<Book> getSortedBooks(@RequestParam String by, @RequestParam boolean ascending) {
+        return bookService.getSortedBooks(by, ascending);
+    }
 }
