@@ -4,6 +4,7 @@ import com.example.aaaBookstoreCA.entity.User;
 import com.example.aaaBookstoreCA.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -18,8 +19,17 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody User user) {
         User loggedIn = userService.login(user.getEmail(), user.getPassword());
-        return (loggedIn != null) ? "Login successful" : "Invalid credentials";
+        if (loggedIn != null) {
+            return ResponseEntity.ok(loggedIn); // Return full user object
+        } else {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+    }
+    
+    @GetMapping("/users/email/{email}")
+    public User getUserByEmail(@PathVariable String email) {
+        return userService.getUserByEmail(email);
     }
 }

@@ -35,10 +35,24 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   // Send POST request to /login endpoint
   const res = await fetch('http://localhost:8080/api/auth/login', {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
   });
 
-  // Show login result
-  document.getElementById('response').innerText = await res.text();
+  if (res.ok) {
+    const user = await res.json();
+    document.getElementById('response').innerText = "Login successful";
+
+    // Check user role
+    if (user.role === "ADMIN") {
+      window.location.href = "admin.html";
+    } else {
+      window.location.href = "customer.html";
+    }
+  } else {
+    const error = await res.text();
+    document.getElementById('response').innerText = error;
+  }
 });
+
+
