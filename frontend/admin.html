@@ -28,6 +28,24 @@
   <section>
     <h2>All Books</h2>
     <button onclick="loadBooks()">Refresh Book List</button>
+	
+	<!-- Sorting Controls -->
+<label for="sortField">Sort by:</label>
+<select id="sortField">
+  <option value="title">Title</option>
+  <option value="author">Author</option>
+  <option value="publisher">Publisher</option>
+  <option value="price">Price</option>
+  <option value="category">Category</option>
+  <option value="stock">Stock</option>
+</select>
+
+<label>
+  <input type="checkbox" id="ascending" checked>
+  Ascending
+</label>
+
+<button onclick="sortBooks()">Sort</button>
     <div id="bookList"></div>
   </section>
 </body>

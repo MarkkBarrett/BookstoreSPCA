@@ -2,7 +2,21 @@
 async function loadBooks() {
   const res = await fetch("http://localhost:8080/api/books/all");
   const books = await res.json();
+  displayBooks(books);
+}
 
+// Fetch and display books based on selected sort field and order
+async function sortBooks() {
+  const sortField = document.getElementById("sortField").value;
+  const ascending = document.getElementById("ascending").checked;
+
+  const res = await fetch(`http://localhost:8080/api/books/sort?by=${sortField}&ascending=${ascending}`);
+  const books = await res.json();
+  displayBooks(books);
+}
+
+// Display the book list in the container
+function displayBooks(books) {
   const container = document.getElementById("bookList");
   container.innerHTML = ""; // Clear list
 
@@ -23,5 +37,5 @@ async function loadBooks() {
   });
 }
 
-// Load books when page opens
+// Load all books on page open
 window.onload = loadBooks;
