@@ -10,6 +10,7 @@ public class RemoveFromCartCommand implements Command {
     private Long userId;
     private Long bookId;
     private int quantity;
+    private String resultMessage = "";
 
     // Store info for undo later
     public RemoveFromCartCommand(CartService cartService, Long userId, Long bookId, int quantity) {
@@ -22,7 +23,11 @@ public class RemoveFromCartCommand implements Command {
     // Remove the book from the user's cart
     @Override
     public void execute() {
-        cartService.removeFromCart(userId, bookId);
+        resultMessage = cartService.removeFromCart(userId, bookId, quantity);
+    }
+
+    public String getResultMessage() {
+        return resultMessage;
     }
 
     // Undo by re-adding it

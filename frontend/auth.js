@@ -41,6 +41,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
   if (res.ok) {
     const user = await res.json();
+	localStorage.setItem("userId", user.id);
     document.getElementById('response').innerText = "Login successful";
 
     // Check user role

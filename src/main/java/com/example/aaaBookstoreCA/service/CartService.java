@@ -55,14 +55,22 @@ public class CartService {
 	}
 
 	// This method removes a specific book from the user's cart
-	public String removeFromCart(Long userId, Long bookId) {
-		CartItem item = cartItemRepository.findByUserIdAndBookId(userId, bookId);
+	public String removeFromCart(Long userId, Long bookId, int quantity) {
+	    CartItem item = cartItemRepository.findByUserIdAndBookId(userId, bookId);
 
-		if (item == null) {
-			return "Item not found in cart.";
-		}
+	    if (item == null) {
+	        return "Item not found in cart.";
+	    }
 
-		cartItemRepository.delete(item);
-		return "Item removed from cart.";
+	    int updatedQuantity = item.getQuantity() - quantity;
+
+	    if (updatedQuantity > 0) {
+	        item.setQuantity(updatedQuantity);
+	        cartItemRepository.save(item);
+	    } else {
+	        cartItemRepository.delete(item); // Remove completely if 0 or below
+	    }
+
+	    return "Item quantity updated/removed from cart.";
 	}
 }

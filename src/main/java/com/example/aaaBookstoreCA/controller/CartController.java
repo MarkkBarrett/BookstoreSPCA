@@ -18,17 +18,17 @@ public class CartController {
 	// Add to cart with COMMAND pattern
 	@PostMapping("/add")
 	public String addToCart(@RequestParam Long userId, @RequestParam Long bookId, @RequestParam int quantity) {
-		Command addCommand = new AddToCartCommand(cartService, userId, bookId, quantity);
+		AddToCartCommand addCommand = new AddToCartCommand(cartService, userId, bookId, quantity);
 		invoker.executeCommand(addCommand);
-		return cartService.addToCart(userId, bookId, quantity);
+		return addCommand.getResultMessage();
 	}
 
 	// Remove from cart with COMMAND pattern
 	@PostMapping("/remove")
 	public String removeFromCart(@RequestParam Long userId, @RequestParam Long bookId, @RequestParam int quantity) {
-		Command removeCommand = new RemoveFromCartCommand(cartService, userId, bookId, quantity);
-		invoker.executeCommand(removeCommand);
-		return cartService.removeFromCart(userId, bookId);
+		RemoveFromCartCommand command = new RemoveFromCartCommand(cartService, userId, bookId, quantity);
+		invoker.executeCommand(command);
+		return command.getResultMessage();
 	}
 
 	// Undo last action with COMMAND pattern
