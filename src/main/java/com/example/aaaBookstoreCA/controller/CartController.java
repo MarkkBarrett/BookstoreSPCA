@@ -2,6 +2,11 @@ package com.example.aaaBookstoreCA.controller;
 
 import com.example.aaaBookstoreCA.pattern.command.*;
 import com.example.aaaBookstoreCA.service.CartService;
+import com.example.aaaBookstoreCA.entity.CartItem;
+import com.example.aaaBookstoreCA.repository.CartItemRepository;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +16,10 @@ public class CartController {
 
 	@Autowired
 	private CartService cartService;
+	
+	@Autowired
+	private CartItemRepository cartItemRepository;
+
 
 	// Instantiate CartInvoker
 	private CartInvoker invoker = new CartInvoker();
@@ -36,5 +45,11 @@ public class CartController {
 	public String undoLastAction() {
 		invoker.undoLastCommand();
 		return "Last command undone.";
+	}
+	
+	// Get user's cart
+	@GetMapping("/user/{userId}")
+	public List<CartItem> getUserCart(@PathVariable Long userId) {
+	    return cartItemRepository.findByUserId(userId);
 	}
 }
