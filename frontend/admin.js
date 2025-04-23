@@ -67,5 +67,11 @@ function displayBooks(books) {
   });
 }
 
+// Toggle books display
+function toggleBooks() {
+  const section = document.getElementById("bookListSection");
+  section.style.display = section.style.display === "none" ? "block" : "none";
+}
+
 // Load all books on page open
 window.onload = loadBooks;
