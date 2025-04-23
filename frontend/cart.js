@@ -7,14 +7,19 @@ async function loadCart() {
   const cartItems = await res.json();
 
   const container = document.getElementById("cartItems");
+  const totalDisplay = document.getElementById("totalPriceDisplay");
   container.innerHTML = "";
+  let total = 0;
 
   if (cartItems.length === 0) {
     container.innerHTML = "<p>Your cart is empty.</p>";
+    totalDisplay.innerText = "Total: €0.00";
     return;
   }
 
   cartItems.forEach(item => {
+    total += item.book.price * item.quantity;
+	
     const div = document.createElement("div");
     div.style.border = "1px solid #ccc";
     div.style.margin = "10px";
@@ -31,6 +36,8 @@ async function loadCart() {
 
     container.appendChild(div);
   });
+
+  totalDisplay.innerText = `Total: €${total.toFixed(2)}`;
 }
 
 async function removeFromCart(bookId, quantityInputId) {
@@ -50,6 +57,16 @@ function goBack() {
   window.location.href = "customer.html";
 }
 
-function checkoutCart() {
-  alert("Checkout not implemented yet.");
+async function checkoutCart() {
+  const userId = localStorage.getItem("userId");
+
+  const res = await fetch(`http://localhost:8080/api/orders/checkout?userId=${userId}`, {
+    method: "POST"
+  });
+
+  const msg = await res.text();
+  alert(msg);
+
+  // After checkout, reload cart and go back
+  window.location.href = "customer.html";
 }

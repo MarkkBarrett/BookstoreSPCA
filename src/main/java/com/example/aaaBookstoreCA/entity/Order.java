@@ -19,18 +19,19 @@ public class Order {
     private Date orderDate;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<CartItem> items;
+    @JoinTable(name = "orders_items") 
+    private List<OrderItem> orderItems;
 
     // Empty constructor
     public Order() {
     }
 
     // Full constructor
-    public Order(User user, double totalPrice, Date orderDate, List<CartItem> items) {
+    public Order(User user, double totalPrice, Date orderDate, List<OrderItem> items) {
         this.user = user;
         this.totalPrice = totalPrice;
         this.orderDate = orderDate;
-        this.items = items;
+        this.orderItems = items;
     }
 
     // getters and setters
@@ -67,11 +68,11 @@ public class Order {
 		this.orderDate = orderDate;
 	}
 
-	public List<CartItem> getItems() {
-		return items;
+	public List<OrderItem> getOrderItems() {
+		return orderItems;
 	}
 
-	public void setItems(List<CartItem> items) {
-		this.items = items;
+	public void setOrderItems(List<OrderItem> orderItems) {
+		this.orderItems = orderItems;
 	}
 }
