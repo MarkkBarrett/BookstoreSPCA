@@ -1,10 +1,15 @@
 package com.example.aaaBookstoreCA.entity;
 
+import java.util.List;
+
+import com.example.aaaBookstoreCA.pattern.observer.Subject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "books")
-public class Book {
+public class Book extends Subject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +23,12 @@ public class Book {
     private double price;
     private String imageUrl;
     private int stock;
+    
+    private Double averageRating; // <- Observer-triggered field
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @JsonIgnore  // fix recursive call for get ratings
+    private List<Rating> ratings;
 
     // Empty constructor
     public Book() {
@@ -108,5 +119,21 @@ public class Book {
 
 	public void setStock(int stock) {
 		this.stock = stock;
+	}
+
+	public Double getAverageRating() {
+		return averageRating;
+	}
+
+	public void setAverageRating(Double averageRating) {
+		this.averageRating = averageRating;
+	}
+
+	public List<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
 	}
 }
