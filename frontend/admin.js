@@ -73,5 +73,45 @@ function toggleBooks() {
   section.style.display = section.style.display === "none" ? "block" : "none";
 }
 
+async function loadUsersWithOrders() {
+  const res = await fetch("http://localhost:8080/api/books/admin/users-with-orders");
+  const data = await res.json();
+
+  const container = document.getElementById("userOrderList");
+  container.innerHTML = "";
+
+  data.forEach(entry => {
+    const user = entry.user;
+    const orders = entry.orders;
+
+    const div = document.createElement("div");
+    div.style.border = "1px solid #ccc";
+    div.style.margin = "15px";
+    div.style.padding = "10px";
+
+    div.innerHTML = `
+      <strong>${user.username} (${user.email})</strong><br>
+      Address: ${user.address} | Payment: ${user.paymentMethod}<br>
+      <u>Orders:</u><br>
+      ${orders.length === 0 ? "No orders yet." : ""}
+    `;
+
+    // Add each order
+    orders.forEach(order => {
+      div.innerHTML += `
+        <div style="margin-left: 20px;">
+          Order ID: ${order.id} | Total: €${order.totalPrice.toFixed(2)} | Date: ${new Date(order.orderDate).toLocaleDateString()}
+        </div>
+      `;
+    });
+
+    container.appendChild(div);
+  });
+}
+
 // Load all books on page open
 window.onload = loadBooks;
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadUsersWithOrders();
+});
