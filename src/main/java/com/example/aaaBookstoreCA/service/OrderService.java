@@ -46,6 +46,8 @@ public class OrderService {
         }
 
         double total = 0;
+        Order order = new Order(); // Create order first
+
         List<OrderItem> orderItems = new ArrayList<>();
 
         for (CartItem item : cartItems) {
@@ -59,16 +61,13 @@ public class OrderService {
             book.setStock(book.getStock() - item.getQuantity());
             bookRepository.save(book);
 
-            // Add to order item list
-            OrderItem orderItem = new OrderItem(book, item.getQuantity(), book.getPrice());
+            // Create order item with order reference
+            OrderItem orderItem = new OrderItem(book, item.getQuantity(), book.getPrice(), order);
             orderItems.add(orderItem);
 
             // Update total
             total += book.getPrice() * item.getQuantity();
         }
-
-        // Create and save order
-        Order order = new Order();
         order.setUser(user);
         order.setOrderItems(orderItems);
         order.setTotalPrice(total);

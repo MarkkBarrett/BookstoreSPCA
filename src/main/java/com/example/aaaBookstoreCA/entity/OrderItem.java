@@ -14,16 +14,28 @@ public class OrderItem {
 
     private int quantity;
     private double priceAtPurchase;
+    
+    @ManyToOne
+    private Order order;
 
     public OrderItem() {}
 
-    public OrderItem(Book book, int quantity, double priceAtPurchase) {
+    public OrderItem(Book book, int quantity, double priceAtPurchase, Order order) {
         this.book = book;
         this.quantity = quantity;
         this.priceAtPurchase = priceAtPurchase;
+        this.order = order;
     }
 
-    // Getters and setters 
+    public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	// Getters and setters 
 	public Long getId() {
 		return id;
 	}

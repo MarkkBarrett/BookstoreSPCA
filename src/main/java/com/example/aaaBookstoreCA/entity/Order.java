@@ -18,8 +18,7 @@ public class Order {
     private double totalPrice;
     private Date orderDate;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "orders_items") 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
     // Empty constructor
