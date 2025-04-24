@@ -50,19 +50,39 @@ function displayBooks(books) {
 	// Unique quantity input ID per book
     const quantityInputId = `qty-${book.id}`;
 
-    div.innerHTML = `
-      <strong>${book.title}</strong> by ${book.author}<br>
-      <em>${book.publisher}</em> | Category: ${book.category}<br>
-      ISBN: ${book.isbn} | Price: €${book.price} | Stock: ${book.stock}<br>
-      ${book.imageUrl ? `<img src="${book.imageUrl}" alt="Book cover" width="100">` : ""}
-      <br><br>
-      <input type="number" id="${quantityInputId}" value="1" min="1" style="width: 60px;">
-      <button onclick="addToCart(${book.id}, '${quantityInputId}')">Add to Cart</button>
-    `;
-
+div.innerHTML = `
+  <strong>${book.title}</strong> by ${book.author}<br>
+  <em>${book.publisher}</em> | Category: ${book.category}<br>
+  ISBN: ${book.isbn} | Price: €${book.price} | Stock: ${book.stock}<br>
+  ${book.imageUrl ? `<img src="${book.imageUrl}" alt="Book cover" width="100">` : ""}
+  <br>
+  <p>Rating: ${book.averageRating ? book.averageRating.toFixed(1) : "No ratings yet"}</p>
+  <button onclick="rateBook(${book.id})">Ratings</button>
+  <br><br>
+  <input type="number" id="${quantityInputId}" value="1" min="1" style="width: 60px;">
+  <button onclick="addToCart(${book.id}, '${quantityInputId}')">Add to Cart</button>
+`;
 
     container.appendChild(div);
   });
+}
+
+function rateBook(bookId) {
+  window.location.href = `rate.html?bookId=${bookId}`;
+}
+
+async function searchBooks() {
+  const query = document.getElementById("searchInput").value.trim();
+  const type = document.getElementById("searchType").value;
+
+  if (!query) {
+    alert("Please enter a search term.");
+    return;
+  }
+
+  const res = await fetch(`http://localhost:8080/api/books/search/${type}?${type}=${query}`);
+  const books = await res.json();
+  displayBooks(books);
 }
 
 // Load all books on page open

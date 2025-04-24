@@ -37,6 +37,12 @@ public class BookController {
 	public List<Book> getAllBooks() {
 		return bookService.getAllBooks();
 	}
+	
+	// Get book by ID
+	@GetMapping("/{id}")
+	public Book getBookById(@PathVariable Long id) {
+	    return bookService.getBookById(id);
+	}
 
 	// Search by title
 	@GetMapping("/search/title")

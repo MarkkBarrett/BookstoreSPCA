@@ -109,6 +109,20 @@ async function loadUsersWithOrders() {
   });
 }
 
+async function searchBooks() {
+  const query = document.getElementById("searchInput").value.trim();
+  const type = document.getElementById("searchType").value;
+
+  if (!query) {
+    alert("Please enter a search term.");
+    return;
+  }
+
+  const res = await fetch(`http://localhost:8080/api/books/search/${type}?${type}=${query}`);
+  const books = await res.json();
+  displayBooks(books);
+}
+
 // Load all books on page open
 window.onload = loadBooks;
 
