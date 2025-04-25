@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -34,5 +35,11 @@ public class OrderController {
     @GetMapping("/all")
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
+    }
+    
+    // Endpoint to get discount info for current user cart
+    @GetMapping("/discount-info")
+    public Map<String, Object> getDiscountInfo(@RequestParam Long userId) {
+        return orderService.getDiscountInfo(userId);
     }
 }

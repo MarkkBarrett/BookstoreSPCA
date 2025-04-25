@@ -37,7 +37,15 @@ async function loadCart() {
     container.appendChild(div);
   });
 
-  totalDisplay.innerText = `Total: €${total.toFixed(2)}`;
+  // Fetch discount info
+const discountRes = await fetch(`http://localhost:8080/api/orders/discount-info?userId=${userId}`);
+const discountData = await discountRes.json();
+
+// Show discounted total and message directly from backend
+totalDisplay.innerHTML = `
+  <strong>Total after discount:</strong> €${discountData.discountedTotal.toFixed(2)} <br>
+  <em>${discountData.message}</em>
+`;
 }
 
 async function removeFromCart(bookId, quantityInputId) {
