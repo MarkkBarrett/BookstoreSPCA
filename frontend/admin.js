@@ -61,10 +61,25 @@ function displayBooks(books) {
       <em>${book.publisher}</em> | Category: ${book.category}<br>
       ISBN: ${book.isbn} | Price: €${book.price} | Stock: ${book.stock}<br>
       ${book.imageUrl ? `<img src="${book.imageUrl}" alt="Book cover" width="100">` : ""}
-    `;
-
+  <br><br>
+  <input type="number" id="stock-${book.id}" value="1" min="1" style="width: 60px;">
+  <button onclick="addStock(${book.id})">Add Stock</button>
+  <br><br>
+`;
     container.appendChild(div);
   });
+}
+
+async function addStock(bookId) {
+  const quantity = document.getElementById(`stock-${bookId}`).value;
+
+  const res = await fetch(`http://localhost:8080/api/books/admin/add-stock?bookId=${bookId}&quantity=${quantity}`, {
+    method: "POST"
+  });
+
+  const msg = await res.text();
+  alert(msg);
+  loadBooks(); // Refresh the book list
 }
 
 // Toggle books display

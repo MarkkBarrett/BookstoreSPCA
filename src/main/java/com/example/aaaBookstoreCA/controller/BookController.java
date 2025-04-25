@@ -86,7 +86,16 @@ public class BookController {
 			userData.put("orders", orderRepository.findByUserId(user.getId()));
 			result.add(userData);
 		}
-
 		return result;
+	}
+	
+	// Admin endpoint, Increase book stock
+	@PostMapping("/admin/add-stock")
+	public String addStock(@RequestParam Long bookId, @RequestParam int quantity) {
+	    Book book = bookService.getBookById(bookId);
+	    if (book == null) return "Book not found.";
+	    book.setStock(book.getStock() + quantity);
+	    bookService.addBook(book); // save update
+	    return "Stock updated successfully.";
 	}
 }
